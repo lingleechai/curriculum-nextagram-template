@@ -20,5 +20,5 @@ def page_not_found(e):
 
 @app.route("/")
 def home():
-    # return render_template('home.html')
-    return abort(500)
+    return render_template('home.html')
+    # return abort(500)

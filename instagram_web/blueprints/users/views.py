@@ -58,7 +58,6 @@ def logout():
 @users_blueprint.route('/<user_id>/profile', methods=["GET"])
 @login_required
 def profile(user_id):
-    # breakpoint()
     user_id = User.get_by_id(user_id)
     return render_template('users/profile.html', user_id=user_id)
 

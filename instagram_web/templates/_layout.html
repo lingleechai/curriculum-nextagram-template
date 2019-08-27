@@ -23,7 +23,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light navbar-default">
+  <nav class="navbar navbar-expand-md navbar-light navbar-default">
     <img width="30px" class="mr-2"
       src="https://www.freepngimg.com/thumb/logo/62372-computer-neon-instagram-icons-hd-image-free-png.png" />
     <a class="font-weight-bold navbar-brand" href="#">NEXTAGRAM</a>
@@ -34,33 +34,34 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 
-          {% if session["user_id"] %}
-        <li class="nav-item">
-          <a class="nav-link" href="/users/logout">Log Out</a>
-        </li>
+        {% if session["user_id"] %}
+          <li class="nav-item">
+            <a class="nav-link" href="/users/logout">Log Out</a>
+          </li>
         {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="/users/login">Login</a>
-        </li>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/users/new">Sign Up</a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/users/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/users/new">Sign Up</a>
+          </li>
         {% endif %}
-
       </ul>
+          
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{{url_for('users.profile',user_id=current_user.id)}}">Profile</a>
-        </li>
+        {% if current_user.is_authenticated %}
+          <li class="nav-item d-md-flex justify-content-center align-items-center">
+            <a class="nav-link" href="{{url_for('users.profile',user_id=current_user.id)}}">Profile</a>
+          </li>
+        {% endif %}
+            
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-      </form>
     </div>
   </nav>
   <!-- flash -->
