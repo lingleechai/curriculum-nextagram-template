@@ -1,7 +1,7 @@
 import os
 import config
 from models.user import User
-from flask import Flask , render_template
+from flask import Flask , render_template,redirect, flash, url_for
 from models.base_model import db
 from flask_wtf.csrf import CSRFProtect
 from flask_wtf.csrf import CSRFError
@@ -20,9 +20,6 @@ if os.getenv('FLASK_ENV') == 'production':
 else:
     app.config.from_object("config.DevelopmentConfig")
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 @app.errorhandler(CSRFError)
 def handle_csrf_error(e):
@@ -39,3 +36,12 @@ def _db_close(exc):
         print(db)
         print(db.close())
     return exc
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get_by_id(user_id)
+    # User.get_or_non(user_id == User.id)
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash("Please log in to continue!",'success')
+    return redirect(url_for('users.login'))

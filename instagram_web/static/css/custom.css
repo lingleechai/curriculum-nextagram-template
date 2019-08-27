@@ -9,10 +9,15 @@
   }
 
 body{
-    background: #f0f0f0;
+    background: #faedf8;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #a79cf1;
 }
 
 .navbar-default{
     background: #ebe8ff;
+}
+.btn-default{
+    background: #a79cf1;
+    color: white;
 }
