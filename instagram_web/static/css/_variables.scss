@@ -1,0 +1,11 @@
+$primary-accent: #ffd859;
+$primary-accent-light:lighten($primary-accent,5%);
+$primary-accent-darken:darken($primary-accent,5%);
+
+$title:'Shrikhand', cursive;
+
+
+@mixin haha{
+    color:black;
+}
+
