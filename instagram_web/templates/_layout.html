@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+  <link rel="shortcut icon" href="http://mmbiz.qpic.cn/mmemoticon/Q3auHgzwzM5ru4Ecb4nv86Ggvh8NsGnFcribGSm6ueF29T8bERvFzPn1IygSibGeeHaCCE7nP4MbM/0">
   <link href="https://fonts.googleapis.com/css?family=Markazi+Text&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Shrikhand&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@
   <nav class="navbar navbar-expand-md navbar-light navbar-default">
     <img width="30px" class="mr-2"
       src="https://www.freepngimg.com/thumb/logo/62372-computer-neon-instagram-icons-hd-image-free-png.png" />
-    <a class="font-weight-bold navbar-brand" href="#">NEXTAGRAM</a>
+    <a class="font-weight-bold navbar-brand" href="/">NEXTAGRAM</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -56,7 +56,6 @@
             <a class="nav-link" href="{{url_for('users.profile',user_id=current_user.id)}}">Profile</a>
           </li>
         {% endif %}
-            
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>

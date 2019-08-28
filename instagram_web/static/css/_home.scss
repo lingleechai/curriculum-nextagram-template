@@ -22,9 +22,36 @@ body{
 .btn-default{
     background: #a79cf1;
     color: white;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 h1{
-    margin: 40px;
+    margin-top: 40px;
     font-family: 'Shrikhand', sans-serif;
+    letter-spacing: 2px;
+}
+
+.signup{
+    font-family: 'Shrikhand', sans-serif;
+}
+
+.homepage::before{
+    content:'';
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-image: url("https://i.pinimg.com/originals/a5/7b/f9/a57bf940269ffbf167f8b0c5fd50315c.gif");
+    background-size: contain;
+}
+
+.profileImg{
+    border-radius: 50%;
+    border: solid 2px #a79cf1;
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+    align-items: center;
+    object-fit: cover; 
 }
