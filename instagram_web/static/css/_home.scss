@@ -64,6 +64,18 @@ h1{
     object-fit: cover; 
 }
 
+@media(max-width: 600px){
+    .profileImg{
+        border-radius: 50%;
+        border: solid 2px #a79cf1;
+        width: 150px;
+        height: 150px;
+        display: inline-block;
+        align-items: center;
+        object-fit: cover; 
+    }
+}
+
 .preview{
     width: 200px;
     height: 200px;
@@ -71,4 +83,8 @@ h1{
     display: inline-block;
     align-items: center;
     object-fit: cover;
+}
+
+.imgbox{
+    border: #a79cf1 solid 2px;
 }

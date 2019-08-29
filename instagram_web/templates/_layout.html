@@ -4,8 +4,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- icon on top -->
+  <link rel="shortcut icon"
+    href="http://mmbiz.qpic.cn/mmemoticon/Q3auHgzwzM5ru4Ecb4nv86Ggvh8NsGnFcribGSm6ueF29T8bERvFzPn1IygSibGeeHaCCE7nP4MbM/0">
 
-  <link rel="shortcut icon" href="http://mmbiz.qpic.cn/mmemoticon/Q3auHgzwzM5ru4Ecb4nv86Ggvh8NsGnFcribGSm6ueF29T8bERvFzPn1IygSibGeeHaCCE7nP4MbM/0">
   <link href="https://fonts.googleapis.com/css?family=Markazi+Text&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Shrikhand&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap" rel="stylesheet">
@@ -26,7 +28,7 @@
   <nav class="navbar navbar-expand-md navbar-light navbar-default">
     <img width="30px" class="mr-2"
       src="https://www.freepngimg.com/thumb/logo/62372-computer-neon-instagram-icons-hd-image-free-png.png" />
-    <a class="font-weight-bold navbar-brand" href="/">NEXTAGRAM</a>
+    <a class="font-weight-bold navbar-brand m-2" href="/">NEXTAGRAM</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -37,27 +39,29 @@
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 
         {% if session["user_id"] %}
-          <li class="nav-item">
-            <a class="nav-link" href="/users/logout">Log Out</a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/logout">Log Out</a>
+        </li>
         {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="/users/login">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/users/new">Sign Up</a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/new">Sign Up</a>
+        </li>
         {% endif %}
       </ul>
-          
+
       <ul class="navbar-nav ml-auto">
         {% if current_user.is_authenticated %}
-          <li class="nav-item d-md-flex justify-content-center align-items-center">
-            <a class="nav-link" href="{{url_for('users.profile',user_id=current_user.id)}}">Profile</a>
-          </li>
+        <li class="nav-item d-md-flex justify-content-center align-items-center">
+          <a class="nav-link" href="{{url_for('users.profile',user_id=current_user.id)}}">Profile</a>
+        </li>
         {% endif %}
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0" action="{{url_for('users.show')}}" method='POST'>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" name="username" value=""
+            aria-label="Search">
           <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
         </form>
       </ul>

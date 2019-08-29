@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, url_for, request, flash, redirect,session
+from flask import Blueprint, render_template, url_for, request, flash, redirect,session, abort
 from models.user import User
+from models.image import Image
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import check_password_hash
 from helpers.upload import upload as img_upload
@@ -62,10 +63,19 @@ def profile(user_id):
     return render_template('users/profile.html', user_id=user_id)
 
 
+@users_blueprint.route('/<username>', methods=["GET"])
+def view(username):
+    user = User.get_or_none(User.username == username)
+    return render_template('users/view.html', user=user)
 
-# @users_blueprint.route('/<username>', methods=["GET"])
-# def show(username):
-#     pass
+@users_blueprint.route('/search', methods=["POST"])
+def show():
+    name_input = request.form['username']
+    username = User.get_or_none(User.username == name_input)
+    if username:
+        return redirect(url_for('users.view', username=name_input))
+    else:
+        return abort(404)
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -148,18 +158,31 @@ def upload_form(user_id):
 def upload(user_id):
     user = User.get_by_id(user_id)
     if current_user.id == user.id:
-        img_upload()
+        img_upload("profileImg/")
         file = request.files.get('image').filename
         user.image = file
         user.save()
         flash("Profile image successfully uploaded" , "success")
         return redirect(url_for("users.profile", user_id=user_id))
 
-# @users_blueprint.route('/imgupload', methods=['GET'])
-# def upload_form():
+@users_blueprint.route('/<user_id>/userimg', methods=['GET'])
+@login_required
+def userimg_form(user_id):
+    user = User.get_by_id(user_id)
+    if current_user.id == user.id:
+        return render_template('users/userimage.html', user_id=user_id)
 
-
-
+@users_blueprint.route('/<user_id>/userimg', methods=['POST'])
+@login_required
+def userimg(user_id):
+    user = User.get_by_id(user_id)
+    if current_user.id == user.id:
+        img_upload("userImg/")
+        file = request.files.get('image').filename
+        image = Image(userImg=file, user_id = current_user.id)
+        image.save()
+        flash("Image successfully uploaded" , "success")
+        return redirect(url_for("users.profile", user_id=user_id))
 
 
 # @users_blueprint.route('/<id>', methods=['POST'])

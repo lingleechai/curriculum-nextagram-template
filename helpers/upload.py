@@ -10,12 +10,12 @@ s3 = boto3.client(
 )
 
 
-def upload():
+def upload(folder_path):
     file = request.files.get('image')
     s3.upload_fileobj(
         file,
         'linglee-nextagram',
-        file.filename,
+        folder_path + file.filename,
         ExtraArgs={
             "ACL": 'public-read',
             "ContentType": file.content_type
@@ -25,3 +25,4 @@ def upload():
     #     # This is a catch all exception, edit this part to fit your needs.
     #     print("Something Happened: ", e)
     #     return e
+
