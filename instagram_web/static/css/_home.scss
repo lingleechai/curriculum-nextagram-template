@@ -9,6 +9,14 @@
     color: red;
   }
 
+html{
+    box-sizing: border-box;
+}
+
+*,*:before, *:after{
+    box-sizing: inherit;
+}
+
 body{
     background: #faedf8;
     // background: $primary-accent;
@@ -54,4 +62,13 @@ h1{
     display: inline-block;
     align-items: center;
     object-fit: cover; 
+}
+
+.preview{
+    width: 200px;
+    height: 200px;
+    border: solid 2px #a79cf1;
+    display: inline-block;
+    align-items: center;
+    object-fit: cover;
 }
