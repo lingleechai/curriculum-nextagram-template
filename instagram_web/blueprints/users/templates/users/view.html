@@ -9,8 +9,13 @@
                 <div class="card card-signin my-5">
                     <div class="row card-body">
                         <div class=" d-flex flex-column align-items-center col-md-5 col-lg-4">
+                            {% if user.image %}
                             <img class="profileImg"
-                                src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/profileImg/{{user.image}}"/>
+                                src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/profileImg/{{user.image}}" />
+                            {% else %}
+                            <img class="profileImg"
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
+                            {% endif %}
                         </div>
                         <div class=" d-flex flex-wrap justify-content-between col-md-7 col-lg-8">
                             <h1 class='ml-2'>{{user.username}}</h1>
@@ -21,12 +26,20 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="d-flex col-sm-12 col-md-10 col-lg-12 justify-content-center">
-                            <div class="card card-signin my-5 col-md-10 col-lg-12 pb-sm-2 d-flex justify-content-between align-items-center border-0">
+                            <div
+                                class="card card-signin my-5 col-md-10 col-lg-12 pb-sm-2 d-flex justify-content-between align-items-center border-0">
                                 <div class="text-center">
-                                    {% for i in user.user_images %}
-                                    <img class="imgbox m-3" width="300px" height="300px"
+                                    {% if user.userImg %}
+                                        {% for i in user.user_images %}
+                                        <img class="imgbox m-3" width="300px" height="300px"
                                         src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
-                                    {% endfor%}
+                                        {% endfor%}
+                                    {% else %}
+                                    <h5> No image available</h5>
+                                    <img width="200px" height="200px"
+                                        src="https://media.giphy.com/media/xT0Gqg7vX59yL6tsNq/giphy.gif" />
+                                    {% endif %}
+
                                 </div>
                             </div>
                         </div>

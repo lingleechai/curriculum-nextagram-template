@@ -3,6 +3,7 @@ from flask import render_template, abort
 from instagram_web.blueprints.users.views import users_blueprint
 from flask_assets import Environment, Bundle
 from .util.assets import bundles
+from models.user import User
 
 
 assets = Environment(app)
@@ -21,5 +22,6 @@ def page_not_found(e):
 
 @app.route("/")
 def home():
-    return render_template('home.html')
+    users = User.select()
+    return render_template('home.html', users=users)
     # return abort(500)

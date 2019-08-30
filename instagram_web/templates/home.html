@@ -1,9 +1,33 @@
 {% extends "_layout.html" %}
 {% block title %}
-  Homepage
+Homepage
 {% endblock %}
 {% block header %}
 {% endblock %}
 {% block content %}
 <h1 class="homepage m-4 text-center">Homepage</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-lg-5 mx-auto">
+      <div class="card card-signin my-1">
+        <div class="row card-body justify-content-center border">
+          <div class="d-flex flex-column align-items-center mt-2">
+            {% for user in users %}
+            <a href="/users/{{user.username}}" >
+              <h5 class="mt-4">{{user.username}}</h5>
+            </a>
+            {% if user.image %}
+            <img width="100px" height="100px" class="profileImg"
+              src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/profileImg/{{user.image}}" />
+            {% else %}
+            <img width="100px" height="100px"
+              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

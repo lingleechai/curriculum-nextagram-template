@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, url_for, request, flash, redirect,session, abort
 from models.user import User
 from models.image import Image
+from models.transaction import Transaction
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import check_password_hash
 from helpers.upload import upload as img_upload
+from helpers.donate import generate_client_token, find_transaction, transact,TRANSACTION_SUCCESS_STATUSES
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -184,10 +186,53 @@ def userimg(user_id):
         flash("Image successfully uploaded" , "success")
         return redirect(url_for("users.profile", user_id=user_id))
 
+@users_blueprint.route('/donate/<img_id>', methods=['GET'])
+@login_required
+def donate_form(img_id):
+    client_token = generate_client_token()
+    return render_template('users/donate.html', client_token=client_token, img_id=img_id)
 
-# @users_blueprint.route('/<id>', methods=['POST'])
-# def update(id):
-#     pass
+@users_blueprint.route('/show_donate/<transaction_id>', methods=['GET'])
+def show_donate(transaction_id):
+    transaction = find_transaction(transaction_id)
+    result = {}
+    if transaction.status in TRANSACTION_SUCCESS_STATUSES:
+        result = {
+            'header': 'Sweet Success!',
+            'icon': 'success',
+            'message': 'Your test transaction has been successfully processed. See the Braintree API response and try again.'
+        }
+
+    else:
+        result = {
+            'header': 'Transaction Failed',
+            'icon': 'fail',
+            'message': 'Your test transaction has a status of ' + transaction.status + '. See the Braintree API response and try again.'
+        }
+
+    return render_template('users/show.html', transaction=transaction, result=result)
+
+
+@users_blueprint.route('/donate/<img_id>', methods=['POST'])
+@login_required
+def donate(img_id):
+    result = transact({
+        'amount': request.form['amount'],
+        'payment_method_nonce': request.form['payment_method_nonce'],
+        'options': {
+            "submit_for_settlement": True
+        }
+    })
+    if result.is_success or result.transaction:
+        flash('Donate successfully', 'success')
+        Transaction(image_id=img_id, user_id=current_user.id, transaction_history=result.transaction.id, amount=result.transaction.amount).save()
+        return redirect(url_for('users.show_donate',transaction_id=result.transaction.id))
+    else:
+        flash('Donate failed', 'error')
+        for x in result.errors.deep_errors: flash('Error: %s: %s' % (x.code, x.message))
+        return redirect(url_for('users.donate_form',img_id=img_id))
+
+
 
 # MANUAL LOGIN & LOGOUT
 # @users_blueprint.route('/login', methods=['GET', 'POST'])

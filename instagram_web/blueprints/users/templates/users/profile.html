@@ -9,29 +9,40 @@
                 <div class="card card-signin my-5">
                     <div class="row card-body">
                         <div class=" d-flex flex-column align-items-center col-md-5 col-lg-4">
+                            {% if user_id.image %}
                             <img class="profileImg"
                                 src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/profileImg/{{user_id.image}}" />
+                            {% else %}
+                            <img
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
+                            {% endif %}
                             <a href="{{url_for('users.upload' , user_id=user_id.id)}}"><button
                                     class="btn-default mt-4">Change Profile Image</button></a>
                         </div>
                         <div class=" d-flex flex-wrap justify-content-between col-md-7 col-lg-8">
                             <h1 class='ml-2'>{{user_id.username}}</h1>
-                            <a href="{{url_for('users.edit' , user_id=user_id.id)}}"><img width="30px" src="/static/settings.svg"/></a>
+                            <a href="{{url_for('users.edit' , user_id=user_id.id)}}"><img width="30px"
+                                    src="/static/settings.svg" /></a>
 
                             <h6>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit cum, doloremque
                                 voluptatem neque recusandae corrupti, dicta optio illum sint, deserunt accusamus.
                                 Sapiente, nemo veritatis.</h6>
                             <a href="{{url_for('users.userimg' , user_id=user_id.id)}}"><button
                                     class="btn-default mt-4">Upload Image</button></a>
+
                         </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="d-flex col-sm-12 col-md-10 col-lg-12 justify-content-center">
-                            <div class="card card-signin my-5 col-md-10 col-lg-12 pb-sm-2 d-flex justify-content-between align-items-center border-0">
-                                <div class="text-center">
+                            <div
+                                class="card card-signin my-5 col-md-10 col-lg-12 pb-sm-2 d-flex justify-content-between align-items-center border-0">
+                                <div class="d-flex">
                                     {% for i in user_id.user_images %}
-                                    <img class="imgbox m-3" width="300px" height="300px"
-                                        src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
+                                    <div class="flex-column">
+                                        <img class="imgbox m-3" width="300px" height="300px"
+                                            src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
+                                        <a href="{{url_for('users.donate',img_id=i.id)}}"><button class="btn-default ml-3">Donate</button></a>
+                                    </div>
                                     {% endfor%}
                                 </div>
                             </div>
