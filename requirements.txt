@@ -22,6 +22,7 @@ itsdangerous==1.1.0
 Jinja2==2.10
 jmespath==0.9.4
 jsmin==2.2.2
+libsass==0.19.2
 MarkupSafe==1.1.0
 peewee==3.8.2
 peewee-db-evolve==3.7.0

@@ -7,6 +7,7 @@ from werkzeug.security import check_password_hash
 from helpers.upload import upload as img_upload
 from helpers.donate import generate_client_token, find_transaction, transact,TRANSACTION_SUCCESS_STATUSES
 from helpers.email import send_email
+from helpers.google_oauth import oauth
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -36,7 +37,26 @@ def create():
     else:
         flash('confirm password is not the same as password','error')
         return render_template('users/new.html')
+
+@users_blueprint.route('/google_login')
+def google_login():
+    redirect_uri = url_for('users.authorize', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
+
+@users_blueprint.route('/authorize')
+def authorize():
+    oauth.google.authorize_access_token()
+    email = oauth.google.get('https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
+    user = User.get_or_none(User.email == email)
+    if user:
+        login_user(user)
+        flash('Logged In','success')
+        return redirect(url_for('users.profile',user_id=user.id))
+    else:
+        flash('Login Failed Please Sign Up', 'error')
+        return redirect(url_for('users.new'))
         
+
 @users_blueprint.route('/login', methods=['GET'])
 def login_form():
     return render_template('users/login.html')

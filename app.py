@@ -6,6 +6,7 @@ from models.base_model import db
 from flask_wtf.csrf import CSRFProtect
 from flask_wtf.csrf import CSRFError
 from flask_login import LoginManager
+from authlib.flask.client import OAuth
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')
@@ -14,6 +15,8 @@ app = Flask('NEXTAGRAM', root_path=web_dir)
 csrf = CSRFProtect(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+oauth = OAuth()
+oauth.init_app(app)
 
 if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")
