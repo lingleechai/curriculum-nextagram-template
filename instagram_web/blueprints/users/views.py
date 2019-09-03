@@ -6,6 +6,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import check_password_hash
 from helpers.upload import upload as img_upload
 from helpers.donate import generate_client_token, find_transaction, transact,TRANSACTION_SUCCESS_STATUSES
+from helpers.email import send_email
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -68,7 +69,8 @@ def profile(user_id):
 @users_blueprint.route('/<username>', methods=["GET"])
 def view(username):
     user = User.get_or_none(User.username == username)
-    return render_template('users/view.html', user=user)
+    images = Image.select().where(Image.user_id == user.id)
+    return render_template('users/view.html', user=user, images=images)
 
 @users_blueprint.route('/search', methods=["POST"])
 def show():
@@ -225,11 +227,13 @@ def donate(img_id):
     })
     if result.is_success or result.transaction:
         flash('Donate successfully', 'success')
+        image = Image.get_by_id(img_id)
+        send_email(recipient=image.user.email, donor=current_user.email, amount=result.transaction.amount)
         Transaction(image_id=img_id, user_id=current_user.id, transaction_history=result.transaction.id, amount=result.transaction.amount).save()
         return redirect(url_for('users.show_donate',transaction_id=result.transaction.id))
     else:
         flash('Donate failed', 'error')
-        for x in result.errors.deep_errors: flash('Error: %s: %s' % (x.code, x.message))
+        for x in result.errors.deep_errors: flash('Error: %s: %s' % (x.code, x.message),'error')
         return redirect(url_for('users.donate_form',img_id=img_id))
 
 

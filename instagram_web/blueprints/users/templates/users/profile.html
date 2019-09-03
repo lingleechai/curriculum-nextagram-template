@@ -32,28 +32,36 @@
 
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="d-flex col-sm-12 col-md-10 col-lg-12 justify-content-center">
-                            <div
-                                class="card card-signin my-5 col-md-10 col-lg-12 pb-sm-2 d-flex justify-content-between align-items-center border-0">
-                                <div class="d-flex">
-                                    {% for i in user_id.user_images %}
-                                    <div class="flex-column">
-                                        <img class="imgbox m-3" width="300px" height="300px"
-                                            src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
-                                        <a href="{{url_for('users.donate',img_id=i.id)}}"><button class="btn-default ml-3">Donate</button></a>
-                                    </div>
-                                    {% endfor%}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="mb-5 bg-white d-flex flex-wrap align-items-center justify-content-center">
+            {% for i in user_id.user_images %}
+            <!-- <div class="col-md-4 col-sm-6"> -->
+                <div class="d-flex justify-content-center flex-column align-items-center m-3">
+                    <img class="imgbox mb-2"
+                        src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
+                    <a href="{{url_for('users.donate',img_id=i.id)}}" class="btn btn-default">Donate</a>
+                </div>
+            <!-- </div> -->
+            {% endfor%}
+        </div>
     </div>
+    </div>
+
 </body>
 {% endblock %}
+
+
+
+<!-- <div class="card card-signin my-5"></div> -->
+<!-- {% for i in user_id.user_images %}
+<img class="imgbox m-3" width="300px" height="300px"
+    src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
+<a href="{{url_for('users.donate',img_id=i.id)}}"><button <!--
+        class="btn-default">Donate</button></a>
+{% endfor%} -->
 
 
 <!-- <div class="text-center">

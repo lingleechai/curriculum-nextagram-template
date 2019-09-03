@@ -86,5 +86,8 @@ h1{
 }
 
 .imgbox{
+    height: 300px;
+    width: 300px;
     border: #a79cf1 solid 2px;
+    object-fit: cover;
 }
