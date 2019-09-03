@@ -18,11 +18,24 @@
                             {% endif %}
                         </div>
                         <div class=" d-flex flex-wrap justify-content-between col-md-7 col-lg-8">
-                            <h1 class='ml-2'>{{user.username}}</h1>
+                            <div class='d-flex'>
+                                <h1 class='ml-2'>{{user.username}}</h1>
+                                {% if not (current_user in user.followers) %}
+                                <form action="{{url_for('users.follow', user_id = user.id , username=user.username)}}" method='POST'>
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                        <button type="submit" class="btn btn-default">Follow</button>
+                                </form>
+                                    {% else %}
+                                        <form action="{{url_for('users.unfollow', user_id = user.id , username=user.username)}}" method="POST">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                            <button type="submit" class="btn btn-default">Unfollow</button>
+                                        </form>
+                                    {% endif %}
+                            </div>
                             <h6>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit cum, doloremque
                                 voluptatem neque recusandae corrupti, dicta optio illum sint, deserunt accusamus.
                                 Sapiente, nemo veritatis.</h6>
-                        </div>
+                            </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="d-flex col-sm-12 col-md-10 col-lg-12 justify-content-center">

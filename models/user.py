@@ -3,7 +3,7 @@ import peewee as pw
 from werkzeug.security import generate_password_hash
 from flask_login import UserMixin
 import re
-
+from playhouse.hybrid import hybrid_property
 
 class User(UserMixin, BaseModel):
     name = pw.CharField(unique=True , null=False)
@@ -35,3 +35,13 @@ class User(UserMixin, BaseModel):
             self.errors.append("Email already exists!")
         else:
             self.password = generate_password_hash(self.password)
+
+    @hybrid_property
+    def followers(self):
+        from models.user_follower import User_follower
+        return [u for u in User.select().join(User_follower, on=(User_follower.follower_id == User.id)).where(self.id == User_follower.user_id)]
+
+    @hybrid_property
+    def following(self):
+        from models.user_follower import User_follower
+        return [u for u in User.select().join(User_follower, on=(User.follower.user_id == User.id)).where(self.id == User_follower.user_id)]

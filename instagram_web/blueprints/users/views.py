@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, url_for, request, flash, redirect,session, abort
 from models.user import User
 from models.image import Image
+from models.user_follower import User_follower
 from models.transaction import Transaction
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import check_password_hash
@@ -84,7 +85,6 @@ def logout():
 def profile(user_id):
     user_id = User.get_by_id(user_id)
     return render_template('users/profile.html', user_id=user_id)
-
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def view(username):
@@ -256,7 +256,25 @@ def donate(img_id):
         for x in result.errors.deep_errors: flash('Error: %s: %s' % (x.code, x.message),'error')
         return redirect(url_for('users.donate_form',img_id=img_id))
 
+@users_blueprint.route('/<user_id>/<username>/follow', methods=['POST'])
+@login_required
+def follow(user_id, username):
+    user = User.get_by_id(user_id)
+    followers = current_user.id
+    following = User_follower(user_id=user.id, follower=followers).save()
+    flash('Follow successfully!' , 'success')
+    return redirect(url_for('users.view',user_id=user_id, username=username))
 
+@users_blueprint.route('/<user_id>/<username>/unfollow', methods=['POST'])
+@login_required
+def unfollow(user_id, username):
+    user = User.get_by_id(user_id)
+    followers = current_user.id
+    following = User_follower.get((User_follower.user==user.id) &( User_follower.follower==followers))
+    # User_follower.get((User_follower.user_id == 34) & (User_follower.follower_id == 32))
+    following.delete_instance()
+    flash('Unfollow successfully!' , 'success')
+    return redirect(url_for('users.view',user_id=user_id, username=username))
 
 # MANUAL LOGIN & LOGOUT
 # @users_blueprint.route('/login', methods=['GET', 'POST'])
