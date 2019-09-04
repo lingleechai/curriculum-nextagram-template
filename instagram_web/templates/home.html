@@ -8,12 +8,13 @@ Homepage
 <h1 class="homepage m-4 text-center">Homepage</h1>
 <div class="container">
   <div class="row">
-    <div class="col-sm-9 col-lg-5 mx-auto">
+    <div class="col-sm-9 col-lg-8 mx-auto">
       <div class="card card-signin my-1">
         <div class="row card-body justify-content-center border">
           <div class="d-flex flex-column align-items-center mt-2">
-            {% for user in users %}
-            <a href="/users/{{user.username}}" >
+
+            {% for user in current_user.following %}
+            <a href="/users/{{user.username}}">
               <h5 class="mt-4">{{user.username}}</h5>
             </a>
             {% if user.image %}
@@ -22,6 +23,16 @@ Homepage
             {% else %}
             <img width="100px" height="100px"
               src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
+            {% endif %}
+
+            {% if user.user_images | length > 0 %}
+            {% for i in user.user_images %}
+            <div class="d-flex justify-content-center flex-column align-items-center m-3">
+              <img class="imgbox mb-2"
+                src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
+              <!-- <a href="{{url_for('users.donate',img_id=i.id)}}" class="btn btn-default">Donate</a> -->
+            </div>
+            {% endfor %}
             {% endif %}
             {% endfor %}
           </div>

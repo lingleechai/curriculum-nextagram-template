@@ -84,6 +84,8 @@ def logout():
 @login_required
 def profile(user_id):
     user_id = User.get_by_id(user_id)
+    # followers = User_follower.user_id.followers.count()
+    # following = User_follower.following.count()
     return render_template('users/profile.html', user_id=user_id)
 
 @users_blueprint.route('/<username>', methods=["GET"])

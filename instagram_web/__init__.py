@@ -5,6 +5,7 @@ from flask_assets import Environment, Bundle
 from .util.assets import bundles
 from models.user import User
 from helpers.email import send_email
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 
 
@@ -24,6 +25,9 @@ def page_not_found(e):
 
 @app.route("/")
 def home():
-    users = User.select()
-    return render_template('home.html', users=users)
+    # follower = current_user.id
+    # follow = User_follower.get((User_follower.user==user) &( User_follower.follower==follower))
+    # followers = current_user.id
+    # following = User_follower.get((User_follower.user==users.id) &( User_follower.follower==followers))
+    return render_template('home.html')
     # return abort(500)

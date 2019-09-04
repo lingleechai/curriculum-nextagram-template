@@ -18,20 +18,36 @@
                             {% endif %}
                         </div>
                         <div class=" d-flex flex-wrap justify-content-between col-md-7 col-lg-8">
-                            <div class='d-flex'>
+                            <div class='d-flex flex-wrap align-items-center'>
                                 <h1 class='ml-2'>{{user.username}}</h1>
                                 {% if not (current_user in user.followers) %}
                                 <form action="{{url_for('users.follow', user_id = user.id , username=user.username)}}" method='POST'>
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                                        <button type="submit" class="btn btn-default">Follow</button>
+                                        <button type="submit" class="btn btn-default ml-3">Follow</button>
                                 </form>
                                     {% else %}
                                         <form action="{{url_for('users.unfollow', user_id = user.id , username=user.username)}}" method="POST">
                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                                            <button type="submit" class="btn btn-default">Unfollow</button>
+                                            <button type="submit" class="btn btn-default ml-3">Unfollow</button>
                                         </form>
                                     {% endif %}
                             </div>
+                            <div class="d-flex mt-4">
+                                    <div class="flex-column text-center mr-4">
+                                        <h6>{{user.user_images.count()}}</h6>
+                                        <p>Post</p>
+                                    </div>
+    
+                                    <div class="flex-column text-center mr-4">
+                                        <h6>{{user.followers | length}}</h6>
+                                        <p>Followers</p>
+                                    </div>
+                                    
+                                    <div class="flex-column text-center mr-4">
+                                        <h6>{{user.following | length}}</h6>
+                                        <p>Following</p>
+                                    </div>
+                                </div>
                             <h6>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit cum, doloremque
                                 voluptatem neque recusandae corrupti, dicta optio illum sint, deserunt accusamus.
                                 Sapiente, nemo veritatis.</h6>
@@ -43,11 +59,11 @@
                                 class="card card-signin my-5 col-md-10 col-lg-12 pb-sm-2 d-flex justify-content-between align-items-center border-0"> -->
                                 <div class="mb-5 bg-white d-flex flex-wrap align-items-center justify-content-center"></div>
                                 <!-- <div class="text-center"> -->
-                                    {% if current_user.status == "Private"%}
+                                    {% if user.status == "Private"%}
                                     <div class="d-flex justify-content-center flex-column align-items-center m-3">
                                     <h5> This Account is Private </h5>
-                                    <img width="200px" height="200px"
-                                        src="https://media.giphy.com/media/xT0Gqg7vX59yL6tsNq/giphy.gif" />
+                                    <img width="100px" height="100px"
+                                        src="/static/heart.gif" />
                                     </div>
                                     {% else %}
                                         {% if images | length > 0 %}
@@ -59,9 +75,11 @@
                                             </div>
                                             {% endfor %}
                                         {% else %}
+                                        <div class="d-flex justify-content-center flex-column align-items-center m-3"></div>
                                         <h5> No image available</h5>
                                         <img width="200px" height="200px"
                                             src="https://media.giphy.com/media/xT0Gqg7vX59yL6tsNq/giphy.gif" />
+                                        </div>
                                         {% endif %}
                                     {% endif %}
 

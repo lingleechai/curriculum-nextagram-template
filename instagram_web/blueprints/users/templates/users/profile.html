@@ -21,9 +21,24 @@
                         </div>
                         <div class=" d-flex flex-wrap justify-content-between col-md-7 col-lg-8">
                             <h1 class='ml-2'>{{user_id.username}}</h1>
+                            <div class="d-flex mt-4">
+                                <div class="flex-column text-center mr-4">
+                                    <h6>{{user_id.user_images.count()}}</h6>
+                                    <p>Post</p>
+                                </div>
+
+                                <div class="flex-column text-center mr-4">
+                                    <h6>{{user_id.followers | length}}</h6>
+                                    <p>Followers</p>
+                                </div>
+
+                                <div class="flex-column text-center mr-4">
+                                    <h6>{{user_id.following | length}}</h6>
+                                    <p>Following</p>
+                                </div>
+                            </div>
                             <a href="{{url_for('users.edit' , user_id=user_id.id)}}"><img width="30px"
                                     src="/static/settings.svg" /></a>
-
                             <h6>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit cum, doloremque
                                 voluptatem neque recusandae corrupti, dicta optio illum sint, deserunt accusamus.
                                 Sapiente, nemo veritatis.</h6>
@@ -32,21 +47,21 @@
 
                         </div>
                     </div>
+                    <div class="mb-5 mt-3 bg-white d-flex flex-wrap align-items-center justify-content-center">
+                        {% for i in user_id.user_images %}
+                        <!-- <div class="col-md-4 col-sm-6"> -->
+                        <div class="d-flex justify-content-center flex-column align-items-center m-3">
+                            <img class="imgbox mb-2"
+                                src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
+                            <a href="{{url_for('users.donate',img_id=i.id)}}" class="btn btn-default">Donate</a>
+                        </div>
+                        <!-- </div> -->
+                        {% endfor%}
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="mb-5 bg-white d-flex flex-wrap align-items-center justify-content-center">
-            {% for i in user_id.user_images %}
-            <!-- <div class="col-md-4 col-sm-6"> -->
-                <div class="d-flex justify-content-center flex-column align-items-center m-3">
-                    <img class="imgbox mb-2"
-                        src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
-                    <a href="{{url_for('users.donate',img_id=i.id)}}" class="btn btn-default">Donate</a>
-                </div>
-            <!-- </div> -->
-            {% endfor%}
-        </div>
     </div>
     </div>
 
