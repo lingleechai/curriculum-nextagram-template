@@ -43,18 +43,26 @@
                                 class="card card-signin my-5 col-md-10 col-lg-12 pb-sm-2 d-flex justify-content-between align-items-center border-0"> -->
                                 <div class="mb-5 bg-white d-flex flex-wrap align-items-center justify-content-center"></div>
                                 <!-- <div class="text-center"> -->
-                                    {% if images | length > 0 %}
-                                        {% for i in user.user_images %}
-                                        <div class="d-flex justify-content-center flex-column align-items-center m-3">
-                                             <img class="imgbox mb-2"
-                                                src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
-                                            <a href="{{url_for('users.donate',img_id=i.id)}}" class="btn btn-default">Donate</a>
-                                        </div>
-                                        {% endfor %}
-                                    {% else %}
-                                    <h5> No image available</h5>
+                                    {% if current_user.status == "Private"%}
+                                    <div class="d-flex justify-content-center flex-column align-items-center m-3">
+                                    <h5> This Account is Private </h5>
                                     <img width="200px" height="200px"
                                         src="https://media.giphy.com/media/xT0Gqg7vX59yL6tsNq/giphy.gif" />
+                                    </div>
+                                    {% else %}
+                                        {% if images | length > 0 %}
+                                            {% for i in user.user_images %}
+                                            <div class="d-flex justify-content-center flex-column align-items-center m-3">
+                                                <img class="imgbox mb-2"
+                                                    src="https://linglee-nextagram.s3-ap-southeast-1.amazonaws.com/userImg/{{i.userImg}}" />
+                                                <a href="{{url_for('users.donate',img_id=i.id)}}" class="btn btn-default">Donate</a>
+                                            </div>
+                                            {% endfor %}
+                                        {% else %}
+                                        <h5> No image available</h5>
+                                        <img width="200px" height="200px"
+                                            src="https://media.giphy.com/media/xT0Gqg7vX59yL6tsNq/giphy.gif" />
+                                        {% endif %}
                                     {% endif %}
 
                                 </div>

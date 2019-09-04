@@ -124,13 +124,15 @@ def edit_form(user_id):
     user = User.get_by_id(user_id)
     username = request.form['username']
     email = request.form['email']
+    privacy = request.form['privacy']
     if user.id == current_user.id:
-        if user.username == username and user.email == email:
+        if user.username == username and user.email == email and user.status == privacy:
             flash("no information update needed" , 'success')
             return render_template('users/edit.html')
         else:
             user.username = username
             user.email = email
+            user.status = privacy
             if user.save():
                 flash('Infomation Updated!' , 'success')
                 return redirect(url_for('users.profile',user_id=user_id))
