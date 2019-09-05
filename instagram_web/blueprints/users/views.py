@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, request, flash, redirect,session, abort
+from flask import Blueprint, render_template, url_for, request, flash, redirect,session, abort, jsonify
 from models.user import User
 from models.image import Image
 from models.user_follower import User_follower
@@ -7,7 +7,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import check_password_hash
 from helpers.upload import upload as img_upload
 from helpers.donate import generate_client_token, find_transaction, transact,TRANSACTION_SUCCESS_STATUSES
-from helpers.email import send_email
+from helpers.email import send_email, follower_email
 from helpers.google_oauth import oauth
 
 users_blueprint = Blueprint('users',
@@ -126,15 +126,15 @@ def edit_form(user_id):
     user = User.get_by_id(user_id)
     username = request.form['username']
     email = request.form['email']
-    privacy = request.form['privacy']
+    privacy = request.form.get('privacy')
     if user.id == current_user.id:
-        if user.username == username and user.email == email and user.status == privacy:
+        if user.username == username and user.email == email and user.is_private == privacy:
             flash("no information update needed" , 'success')
             return render_template('users/edit.html')
         else:
             user.username = username
             user.email = email
-            user.status = privacy
+            user.is_private = privacy
             if user.save():
                 flash('Infomation Updated!' , 'success')
                 return redirect(url_for('users.profile',user_id=user_id))
@@ -260,16 +260,40 @@ def donate(img_id):
         for x in result.errors.deep_errors: flash('Error: %s: %s' % (x.code, x.message),'error')
         return redirect(url_for('users.donate_form',img_id=img_id))
 
-@users_blueprint.route('/<user_id>/<username>/follow', methods=['POST'])
+# @users_blueprint.route('/<user_id>/<username>/follow', methods=['POST'])
+# @login_required
+# def follow(user_id, username):
+#     user = User.get_by_id(user_id)
+#     followers = current_user.id
+#     following = User_follower(user_id=user.id, follower=followers).save()
+#     flash('Follow successfully!' , 'success')
+#     return redirect(url_for('users.view',user_id=user_id, username=username))
+
+@users_blueprint.route('/<user_id>/<username>/follow', methods=['GET'])
 @login_required
 def follow(user_id, username):
     user = User.get_by_id(user_id)
-    followers = current_user.id
-    following = User_follower(user_id=user.id, follower=followers).save()
-    flash('Follow successfully!' , 'success')
-    return redirect(url_for('users.view',user_id=user_id, username=username))
+    follower = current_user.id
+    if user.is_private == True:
+        following = User_follower(user_id = user.id, follower=follower, is_approved=False).save()
+        # flash('Follow successfully!' , 'success')
+        response = {
+            "status": "success",
+            "new_follower_count": len(user.followers),
+            "privacy": user.is_private
+        }
+        return jsonify(response)
+    else:
+        following = User_follower(user_id = user.id, follower=follower, is_approved=True).save()
+        response = {
+            "status": "success",
+            "new_follower_count": len(user.followers)
+        }
+        return jsonify(response)
+        
 
-@users_blueprint.route('/<user_id>/<username>/unfollow', methods=['POST'])
+
+@users_blueprint.route('/<user_id>/<username>/unfollow', methods=['GET'])
 @login_required
 def unfollow(user_id, username):
     user = User.get_by_id(user_id)
@@ -277,8 +301,23 @@ def unfollow(user_id, username):
     following = User_follower.get((User_follower.user==user.id) &( User_follower.follower==followers))
     # User_follower.get((User_follower.user_id == 34) & (User_follower.follower_id == 32))
     following.delete_instance()
-    flash('Unfollow successfully!' , 'success')
-    return redirect(url_for('users.view',user_id=user_id, username=username))
+    # flash('Unfollow successfully!' , 'success')
+    response = {
+        "status": "success",
+        "new_follower_count": len(user.followers)
+    }
+    return jsonify(response)
+
+# @users_blueprint.route('/<user_id>/<username>/unfollow', methods=['POST'])
+# @login_required
+# def unfollow(user_id, username):
+#     user = User.get_by_id(user_id)
+#     followers = current_user.id
+#     following = User_follower.get((User_follower.user==user.id) &( User_follower.follower==followers))
+#     # User_follower.get((User_follower.user_id == 34) & (User_follower.follower_id == 32))
+#     following.delete_instance()
+#     flash('Unfollow successfully!' , 'success')
+#     return redirect(url_for('users.view',user_id=user_id, username=username))
 
 # MANUAL LOGIN & LOGOUT
 # @users_blueprint.route('/login', methods=['GET', 'POST'])

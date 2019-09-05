@@ -8,3 +8,4 @@ import re
 class User_follower(BaseModel):
     user = pw.ForeignKeyField(User)
     follower = pw.ForeignKeyField(User)
+    is_approved = pw.BooleanField()

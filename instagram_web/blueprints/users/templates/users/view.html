@@ -20,17 +20,23 @@
                         <div class=" d-flex flex-wrap justify-content-between col-md-7 col-lg-8">
                             <div class='d-flex flex-wrap align-items-center'>
                                 <h1 class='ml-2'>{{user.username}}</h1>
-                                {% if not (current_user in user.followers) %}
-                                <form action="{{url_for('users.follow', user_id = user.id , username=user.username)}}" method='POST'>
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                                        <button type="submit" class="btn btn-default ml-3">Follow</button>
+                                {% if current_user.check_following(user) == True %}
+                                <form action="{{url_for('users.unfollow', user_id = user.id , username=user.username)}}" method="GET">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                    <button type="submit" id="{{user.id}}" name="{{user.username}}" class="follow-btn btn btn-default-click ml-3">Unfollow</button>
                                 </form>
-                                    {% else %}
-                                        <form action="{{url_for('users.unfollow', user_id = user.id , username=user.username)}}" method="POST">
+                                {% elif current_user.check_following(user) == "Pending" %}
+                                    <form action="{{url_for('users.unfollow', user_id = user.id , username=user.username)}}" method="GET">
                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                                            <button type="submit" class="btn btn-default ml-3">Unfollow</button>
-                                        </form>
-                                    {% endif %}
+                                        <button type="submit" id="{{user.id}}" name="{{user.username}}" class="follow-btn btn btn-default-click ml-3">Pending</button>
+                                    </form>
+                                
+                                {% else %}
+                                    <form action="{{url_for('users.follow', user_id = user.id , username=user.username)}} method="GET">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                                            <button type="submit" id="{{user.id}}" name="{{user.username}}" class="follow-btn btn btn-default ml-3">Follow</button>
+                                    </form>
+                                {% endif %}
                             </div>
                             <div class="d-flex mt-4">
                                     <div class="flex-column text-center mr-4">
@@ -39,7 +45,7 @@
                                     </div>
     
                                     <div class="flex-column text-center mr-4">
-                                        <h6>{{user.followers | length}}</h6>
+                                        <h6 id="followers">{{user.followers | length}}</h6>
                                         <p>Followers</p>
                                     </div>
                                     
@@ -59,7 +65,7 @@
                                 class="card card-signin my-5 col-md-10 col-lg-12 pb-sm-2 d-flex justify-content-between align-items-center border-0"> -->
                                 <div class="mb-5 bg-white d-flex flex-wrap align-items-center justify-content-center"></div>
                                 <!-- <div class="text-center"> -->
-                                    {% if user.status == "Private"%}
+                                    {% if user.is_private == True %}
                                     <div class="d-flex justify-content-center flex-column align-items-center m-3">
                                     <h5> This Account is Private </h5>
                                     <img width="100px" height="100px"

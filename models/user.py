@@ -3,7 +3,7 @@ import peewee as pw
 from werkzeug.security import generate_password_hash
 from flask_login import UserMixin
 import re
-from playhouse.hybrid import hybrid_property
+from playhouse.hybrid import hybrid_property, hybrid_method
 
 class User(UserMixin, BaseModel):
     name = pw.CharField(unique=True , null=False)
@@ -11,7 +11,7 @@ class User(UserMixin, BaseModel):
     email = pw.CharField(unique=True, null=False)
     password = pw.CharField(null=False)
     image = pw.CharField(null=True)
-    status = pw.CharField(null=True)
+    is_private = pw.BooleanField(null=True)
 
     
     def validate(self):
@@ -40,9 +40,21 @@ class User(UserMixin, BaseModel):
     @hybrid_property
     def followers(self):
         from models.user_follower import User_follower
-        return [u for u in User.select().join(User_follower, on=(User_follower.follower_id == User.id)).where(self.id == User_follower.user_id)]
+        return [u for u in User.select().join(User_follower, on=(User_follower.follower_id == User.id)).where((self.id == User_follower.user_id) & (User_follower.is_approved == True))]
 
     @hybrid_property
     def following(self):
         from models.user_follower import User_follower
-        return [u for u in User.select().join(User_follower, on=(User_follower.user_id == User.id)).where(self.id == User_follower.follower_id)]
+        return [u for u in User.select().join(User_follower, on=(User_follower.user_id == User.id)).where((self.id == User_follower.follower_id) & (User_follower.is_approved == True))]
+
+    @hybrid_method
+    def check_following(self, idol):
+        from models.user_follower import User_follower
+        user = User_follower.get_or_none((User_follower.user_id == idol.id) & (User_follower.follower_id == self.id)) 
+        if not user:
+            return False
+        elif (user.is_approved == True):
+            return True
+        elif (user.is_approved == False):
+            return "Pending"
+        

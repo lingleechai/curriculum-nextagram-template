@@ -21,31 +21,17 @@
                                 <input type="email" id="inputEmail" class="form-control mb-3" name='email'
                                     value="{{current_user.email}}" required>
                             </div>
-                            {% if current_user.status == "Private" %}
                             <div class="radio-item">
                                 <p class="mt-2">Account Privacy</p>
                                 <hr>
                                 <label class="checkbox-inline mr-3">
-                                    <input type="radio" name="privacy" value="Private" class="mr-1" checked>Private
+                                    <input type="radio" name="privacy" value="true" class="mr-1" {{'checked' if current_user.is_private else None}}>Private
+                                </label>
+                                <label class="checkbox-inline mr-3">
+                                    <input type="radio" name="privacy" class="mr-1" {{'checked' if not current_user.is_private else None}}>Public
                                 </label>
 
-                                <label class="checkbox-inline mr-3">
-                                    <input type="radio" name="privacy" value="Public" class="mr-1">Public
-                                </label>
                             </div>
-                            {% else %}
-                            <div class="radio-item">
-                                    <p class="mt-2">Account Privacy</p>
-                                    <hr>
-                                    <label class="checkbox-inline mr-3">
-                                        <input type="radio" name="privacy" value="Private" class="mr-1">Private
-                                    </label>
-    
-                                    <label class="checkbox-inline mr-3">
-                                        <input type="radio" name="privacy" value="Public" class="mr-1" checked>Public
-                                    </label>
-                                </div>
-                                {% endif %}
 
                             <!-- <div class="custom-control custom-checkbox mb-3">
                                     <input type="checkbox" class="custom-control-input" id="customCheck1">

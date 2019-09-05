@@ -10,4 +10,4 @@ class Transaction(BaseModel):
     user = pw.ForeignKeyField(User, backref="user_transaction")
     image= pw.ForeignKeyField(Image, backref="image_transaction" )
     transcation_history = pw.CharField(null=True)
-    amount = pw.DecimalField(null=True, decimal_places="2")
+    amount = pw.DecimalField(null=True, decimal_places=2)
