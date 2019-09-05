@@ -98,6 +98,8 @@ def view(username):
 def show():
     name_input = request.form['username']
     username = User.get_or_none(User.username == name_input)
+    if username == current_user:
+        return redirect(url_for('users.profile', user_id=current_user.id))
     if username:
         return redirect(url_for('users.view', username=name_input))
     else:
