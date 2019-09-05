@@ -275,19 +275,22 @@ def follow(user_id, username):
     user = User.get_by_id(user_id)
     follower = current_user.id
     if user.is_private == True:
+        follower_email(user=user.email,f_username = current_user.username, follower=current_user.email)
         following = User_follower(user_id = user.id, follower=follower, is_approved=False).save()
-        # flash('Follow successfully!' , 'success')
         response = {
             "status": "success",
             "new_follower_count": len(user.followers),
             "privacy": user.is_private
         }
         return jsonify(response)
+
     else:
         following = User_follower(user_id = user.id, follower=follower, is_approved=True).save()
         response = {
             "status": "success",
-            "new_follower_count": len(user.followers)
+            "new_follower_count": len(user.followers),
+            "privacy": user.is_private
+
         }
         return jsonify(response)
         
