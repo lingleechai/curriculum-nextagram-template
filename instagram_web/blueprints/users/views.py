@@ -119,7 +119,7 @@ def edit(user_id):
     if current_user == user:
         return render_template('users/edit.html', user_id=user_id)
     else:
-        flash('WRONG ACCOUNT')
+        flash('WRONG ACCOUNT', 'error')
         return redirect(url_for('users.profile', user_id=user_id))
 
 @users_blueprint.route('/<user_id>/edit', methods=['POST'])
