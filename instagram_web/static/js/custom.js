@@ -65,6 +65,7 @@ $(document).ready(function() {
                           .prop('disabled', false)
                           .removeClass('btn-default')
                           .addClass('btn-default-click')
+                          .text('Accepted')
                   }
             })
           })
@@ -84,6 +85,7 @@ $(document).ready(function() {
                     .prop('disabled', false)
                     .removeClass('btn-special')
                     .addClass('btn-default-click')
+                    .text('Deleted')
             }
         })
     })
