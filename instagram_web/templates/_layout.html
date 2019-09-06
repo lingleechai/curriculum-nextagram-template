@@ -62,22 +62,20 @@
           <div class="dropdown show">
               <img width="50px" src="/static/heart-64.png" class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
             
-              <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuLink">
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                 {% if current_user.follower_requests | length > 0 %}
+                <div class="mt-1 ml-4 p-2 border-bottom" id="title-follower">Follower Requests</div>
                 {% for follower in current_user.follower_requests %}
-                <div class="mt-1 ml-4">Follower Requests</div>
-                <hr>
-                <div class='d-flex  mr-3'>
+                <div class='d-flex mr-3 p-2 border-bottom' id="request-row-{{follower.id}}" >
                   <a class="dropdown-item profile-link" href="{{url_for('users.view', username=follower.username)}}">{{follower.username}}</a>
                   <form action="{{url_for('users.approval', following_id=follower.id)}}">
-                    <button class="accept-btn btn btn-default ml-2" id={{follower.id}} type="submit" name="accept" > Accept </button>
+                    <button class="accept-btn btn-sm btn-default ml-2" id={{follower.id}} type="submit" name="accept" > Accept </button>
                   </form>
                   
                   <form action="{{url_for('users.decline', following_id=follower.id)}}">
-                    <button class="decline-btn btn btn-special ml-2" id={{follower.id}} type="submit" name="decline"> Delete </button>
+                    <button class="decline-btn btn-sm btn-special ml-2" id={{follower.id}} type="submit" name="decline"> Delete </button>
                   </form>
                 </div>
-                <hr>
                 {% endfor %}
                 {% else %}
                 <p class=" resize text-center">No follower request</p>

@@ -21,20 +21,85 @@
                         </div>
                         <div class=" d-flex flex-wrap justify-content-between col-md-7 col-lg-8">
                             <h1 class='ml-2'>{{user_id.username}}</h1>
-                            <div class="d-flex mt-4">
+                            <div class="d-flex align-items-center mt-4">
                                 <div class="flex-column text-center mr-4">
-                                    <h6>{{user_id.user_images.count()}}</h6>
-                                    <p>Post</p>
+                                    <div>
+                                        <h6>{{user_id.user_images.count()}}</h6>
+                                        <p>Post</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex-column text-center mr-3">
+                                    <!-- Button trigger modal -->
+                                    <div>
+                                        <a class="btn" data-toggle="modal" data-target="#followersModal">
+                                                <h6 id="followers">{{user_id.followers | length}}</h6>
+                                                <p>Followers</p>
+                                        </a>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="followersModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h5 class="modal-title" id="followersModalLabel">Followers</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    {% for follower in user_id.followers %}
+                                                    <a href="{{url_for('users.view' , username=follower.username)}}">
+                                                     {{follower.username}}
+                                                    </a>
+                                                    
+                                                    {% endfor %}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <!-- <h6 id="followers">{{user_id.followers | length}}</h6> -->
+                                    <!-- <p>Followers</p> -->
                                 </div>
 
                                 <div class="flex-column text-center mr-4">
-                                    <h6 id="followers">{{user_id.followers | length}}</h6>
-                                    <p>Followers</p>
-                                </div>
-
-                                <div class="flex-column text-center mr-4">
-                                    <h6>{{user_id.following | length}}</h6>
-                                    <p>Following</p>
+                                        <div>
+                                                <a class="btn" data-toggle="modal" data-target="#followingModal">
+                                                        <h6>{{user_id.following | length}}</h6>
+                                                        <p>Following</p>
+                                                </a>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                            <h5 class="modal-title" id="followingModalLabel">Following</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                            <div>
+                                                                {% for f in user_id.following %}
+                                                                <a href="{{url_for('users.view' , username=f.username)}}">
+                                                                        {{f.username}}
+                                                                </a>
+                                                                {%  endfor %}
+                                                            </div>
+                                                            
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                    <!-- <h6>{{user_id.following | length}}</h6>
+                                    <p>Following</p> -->
                                 </div>
                             </div>
                             <a href="{{url_for('users.edit' , user_id=user_id.id)}}"><img width="30px"

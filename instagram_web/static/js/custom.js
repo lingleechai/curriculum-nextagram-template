@@ -54,18 +54,24 @@ $(document).ready(function() {
             $.ajax({
               url: `/users/${e.target.id}/approval`,
               method: 'GET',
-              beforeSend: function() {
-                $('.accept-btn')
-                  .prop('disabled', true)
-              },
+            //   beforeSend: function() {
+            //     $('.accept-btn')
+            //       .prop('disabled', true)
+            //   },
               success: function(response) {
+                  if (response.new_follower_requests_count > 0 ){
                       $('.follow-amount').text(response.new_follower_requests_count)
                       $('#followers').text(response.new_follower_count)
-                      $('.accept-btn')
-                          .prop('disabled', false)
-                          .removeClass('btn-default')
-                          .addClass('btn-default-click')
-                          .text('Accepted')
+                      $('#request-row-'+ e.target.id).remove()
+                  }else{
+                      $('#title-follower').text('No Follower Request')
+                      $('#request-row-'+ e.target.id).remove()
+                  }
+                    //   $('.accept-btn')
+                    //       .prop('disabled', false)
+                    //       .removeClass('btn-default')
+                    //       .addClass('btn-default-click')
+                    //       .text('Accepted')
                   }
             })
           })
@@ -74,18 +80,19 @@ $(document).ready(function() {
         $.ajax({
         url: `/users/${e.target.id}/decline`,
         method: 'GET',
-        beforeSend: function() {
-            $('.decline-btn')
-            .prop('disabled', true)
-        },
+        // beforeSend: function() {
+        //     $('.decline-btn')
+        //     .prop('disabled', true)
+        // },
         success: function(response) {
                 $('.follow-amount').text(response.new_follower_requests_count)
                 $('#followers').text(response.new_follower_count)
-                $('.decline-btn')
-                    .prop('disabled', false)
-                    .removeClass('btn-special')
-                    .addClass('btn-default-click')
-                    .text('Deleted')
+                $('#request-row-'+ e.target.id).remove()
+                // $('.decline-btn')
+                //     .prop('disabled', false)
+                //     .removeClass('btn-special')
+                //     .addClass('btn-default-click')
+                //     .text('Deleted')
             }
         })
     })
