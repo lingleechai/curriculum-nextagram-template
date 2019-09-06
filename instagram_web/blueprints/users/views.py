@@ -313,6 +313,39 @@ def unfollow(user_id, username):
     }
     return jsonify(response)
 
+
+@users_blueprint.route('/<following_id>/approval')
+@login_required
+def approval(following_id):
+    following = User_follower.get((User_follower.user==current_user.id) &( User_follower.follower==following_id))
+    following.is_approved = True
+    following.save()
+    
+    response = {
+        "status": "success",
+        "new_follower_count": len(current_user.followers),
+        "new_follower_requests_count": len(current_user.follower_requests)
+    }
+    return jsonify(response)
+
+
+@users_blueprint.route('/<following_id>/decline')
+@login_required
+def decline(following_id):
+    following = User_follower.get((User_follower.user==current_user.id) &( User_follower.follower==following_id))
+    following.is_approved = True
+    following.delete_instance()
+    # return redirect(url_for("users.profile", user_id=following_id))
+    response = {
+        "status": "success",
+        "new_follower_count": len(current_user.followers),
+        "new_follower_requests_count": len(current_user.follower_requests)
+    }
+    return jsonify(response)
+
+
+
+
 # @users_blueprint.route('/<user_id>/<username>/unfollow', methods=['POST'])
 # @login_required
 # def unfollow(user_id, username):

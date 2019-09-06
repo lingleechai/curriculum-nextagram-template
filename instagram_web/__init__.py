@@ -31,3 +31,7 @@ def home():
     # following = User_follower.get((User_follower.user==users.id) &( User_follower.follower==followers))
     return render_template('home.html')
     # return abort(500)
+
+@app.context_processor
+def inject_users():
+    return{"users": User}
