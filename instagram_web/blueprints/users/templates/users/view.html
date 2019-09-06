@@ -65,7 +65,7 @@
                                 class="card card-signin my-5 col-md-10 col-lg-12 pb-sm-2 d-flex justify-content-between align-items-center border-0"> -->
                                 <div class="mb-5 bg-white d-flex flex-wrap align-items-center justify-content-center"></div>
                                 <!-- <div class="text-center"> -->
-                                    {% if user.is_private == True %}
+                                    {% if user.is_private == True and not (current_user in user.followers) %}
                                     <div class="d-flex justify-content-center flex-column align-items-center m-3">
                                     <h5> This Account is Private </h5>
                                     <img width="100px" height="100px"
