@@ -244,6 +244,9 @@ def show_donate(transaction_id):
 @users_blueprint.route('/donate/<img_id>', methods=['POST'])
 @login_required
 def donate(img_id):
+    print('------------------------')
+    print(request.form['amount'])
+    print('------------------------')
     result = transact({
         'amount': request.form['amount'],
         'payment_method_nonce': request.form['payment_method_nonce'],
