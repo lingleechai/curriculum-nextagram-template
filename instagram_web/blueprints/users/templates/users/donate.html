@@ -9,13 +9,13 @@
     <!-- <div id="dropin-container"></div>
     <button id="submit-button">Request payment method</button> -->
     <div class="m-5">
-        <form id="payment-form" method="post" action="{{url_for('users.donate',img_id=img_id)}}" method="POST">
+        <form id="payment-form" action="{{url_for('users.donate',img_id=img_id)}}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
             <section>
                 <label for="amount">
                     <span class="input-label">Amount</span>
                     <div class="input-wrapper amount-wrapper">
-                        <input id="amount" name="amount" type="tel" min="1" placeholder="Amount" value="10">
+                        <input id="amount" name="amount" type="tel" min="1" placeholder="Amount">
                     </div>
                 </label>
 

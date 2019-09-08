@@ -1,6 +1,7 @@
 from app import app
 from flask_cors import CORS
 
+# any domain can come to this API
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 ## API Routes ##
