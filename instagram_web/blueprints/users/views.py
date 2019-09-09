@@ -31,7 +31,7 @@ def create():
         user = User(email=email, username=username, name=name ,password=password)
         if user.save():
             flash('Sign Up Successful!','success')
-            return redirect(url_for('users.new'))
+            return redirect(url_for('users.login'))
         else:
             flash('<br>'.join(user.errors),'error')
             return render_template('users/new.html')
@@ -84,8 +84,6 @@ def logout():
 @login_required
 def profile(user_id):
     user_id = User.get_by_id(user_id)
-    # followers = User_follower.user_id.followers.count()
-    # following = User_follower.following.count()
     return render_template('users/profile.html', user_id=user_id)
 
 @users_blueprint.route('/<username>', methods=["GET"])
@@ -244,9 +242,6 @@ def show_donate(transaction_id):
 @users_blueprint.route('/donate/<img_id>', methods=['POST'])
 @login_required
 def donate(img_id):
-    print('------------------------')
-    print(request.form['amount'])
-    print('------------------------')
     result = transact({
         'amount': request.form['amount'],
         'payment_method_nonce': request.form['payment_method_nonce'],
